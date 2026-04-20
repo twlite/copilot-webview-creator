@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>copilot-webview content</title>
+<link rel="stylesheet" href="style.css" />
+<!-- /__bridge.js is auto-served by the extension. It exposes `window.copilot`
+     as a Proxy: `await copilot.anyCallbackName(arg1, arg2)` invokes the
+     matching callback on the extension side and resolves with its return
+     value. It must load before any code that uses `copilot`. -->
+<script src="/__bridge.js"></script>
+</head>
+<body>
+  <main>
+    <h1>👋 Hello from <code>copilot-webview</code></h1>
+    <p>Click count: <span id="count">0</span></p>
+    <button id="btn">Click me</button>
+  </main>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

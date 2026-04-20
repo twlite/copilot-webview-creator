@@ -1,0 +1,24 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #1e1e2e, #313244);
+  color: #cdd6f4;
+  display: flex; align-items: center; justify-content: center;
+}
+main {
+  text-align: center;
+  padding: 2rem 3rem;
+  background: rgba(17, 17, 27, 0.6);
+  border: 1px solid #45475a;
+  border-radius: 12px;
+}
+h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+code { background: #11111b; padding: 0.1em 0.4em; border-radius: 4px; color: #f9e2af; }
+#count { font-weight: 600; color: #89b4fa; }
+button {
+  margin-top: 1rem; padding: 0.5rem 1.5rem; font-size: 1rem;
+  border: none; border-radius: 6px;
+  background: #89b4fa; color: #1e1e2e; cursor: pointer;
+}
+button:hover { background: #74c7ec; }

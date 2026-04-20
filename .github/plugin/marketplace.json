@@ -1,0 +1,22 @@
+{
+  "name": "copilot-webview-creator",
+  "metadata": {
+    "description": "GitHub Copilot CLI Webview Creator plugin",
+    "version": "1.0.0"
+  },
+  "owner": {
+    "name": "Steve Sanderson",
+    "email": "SteveSandersonMS@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "copilot-webview-creator",
+      "source": "./plugins/copilot-webview-creator",
+      "description": "Copilot CLI Webview Creator plugin",
+      "version": "1.0.0",
+      "skills": [
+        "./skills/copilot-webview-creator"
+      ]
+    }
+  ]
+}
