@@ -110,6 +110,13 @@ Assume the skill directory is `.github/skills/copilot-webview-creator/` (i.e. **
 
 Do not invent your own version of `lib/copilot-webview.js` or `lib/webview-child.mjs`. They are tested and contain platform-specific subtleties (Windows-only `WEBVIEW2_USER_DATA_FOLDER` cleanup, etc.). Always copy from `template/lib/`.
 
+You do **not** need to write out separate copies of the files (e.g., `main.mjs.new`) before replacing the originals. You can use your normal edit tools to update the copied files in-place.
+
+To update the extension after modifying code:
+
+ - For webview content changes, you can trigger a reload by invoking the `<extensionName>_show` tool with the reload flag
+ - For anything more, use `extensions_reload`
+
 ## Content patterns
 
 Pick based on what the user wants to build. You can switch later — the only thing that changes is the `content/` directory.
@@ -236,3 +243,11 @@ Wired up in `main.mjs`:
   - `template/content/` — minimal vanilla HTML/JS page; the default starting point.
 - `content-examples/` — alternative content stacks. Use one of these to replace `<target>/content/` if vanilla isn't the right fit.
   - `content-examples/react/` — React+TSX page with esbuild build.
+
+## Troubleshooting
+
+If you try to reload the extension and it doesn't start:
+
+ - Check if the current project is a git repo. If not, Copilot CLI won't be able to locate the extension, since they are loaded from relative to the git repo root
+ - Check if the extension's `node_modules` were installed. If not, run `npm install` in the extension directory to install the dependencies.
+ - If all else fails, the user may need to quit and restart Copilot CLI to clear cached extension state
