@@ -1,0 +1,12 @@
+{
+  "name": "copilot-webview-creator",
+  "description": "Extend Copilot with custom UI",
+  "version": "1.0.0",
+  "author": {
+    "name": "Steve Sanderson",
+    "email": "SteveSandersonMS@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": ["webui", "webview", "ui"],
+  "skills": ["skills/"]
+}
