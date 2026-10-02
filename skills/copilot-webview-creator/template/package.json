@@ -2,7 +2,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@webviewjs/webview": "^0.1.4",
-    "ws": "^8.18.0"
+    "@webviewjs/webview": "^0.4.7"
   }
 }

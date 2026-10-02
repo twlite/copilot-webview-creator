@@ -38,20 +38,39 @@ Don't guess SDK behavior — consult the guide whenever a question comes up abou
 
 ## The architecture (read once, then trust the template)
 
-`@webviewjs/webview` calls `app.run()` which **freezes the host Node event loop** for the lifetime of the window. So the library spawns a tiny child process whose only job is to host the window; all real work happens in the parent extension and in the page itself, talking over **one WebSocket** served from the parent.
+`@webviewjs/webview` runs its native event loop without blocking Node.js, so the Copilot extension and native window live in the same process.
 
+The page is served through a custom `app://` protocol. Communication uses WebviewJS's built-in IPC instead of an HTTP or WebSocket bridge:
+
+- Page → extension calls go through `webview.expose()`.
+- Extension → page updates use `evaluateScript()` and the page event dispatcher.
+- Arbitrary page evaluation still goes through the same native IPC path.
+
+```text
+┌──────────────────────────────────┐
+│ COPILOT EXTENSION                │
+│                                  │
+│ @webviewjs/webview               │
+│ Copilot callbacks                │
+│                                  │
+│ app:// custom protocol ──────────┼──────────────► HTML / JS / CSS
+│                                  │
+│ webview.expose("copilot", ...) ◄─┼─────────────── Page → Node RPC
+│                                  │
+│ evaluateScript() ────────────────┼──────────────► Node → Page
+└──────────────────────────────────┘
+                                                   │
+                                                   ▼
+                                  ┌────────────────────────────┐
+                                  │ WEBVIEW PAGE               │
+                                  │                            │
+                                  │ window.copilot             │
+                                  │ window.copilotEvents       │
+                                  │ index.html / React app     │
+                                  └────────────────────────────┘
 ```
-┌────────────────────┐     WebSocket      ┌──────────────────────────┐
-│ PARENT (extension) │ ◄────────────────► │ PAGE (Chromium, alive)   │
-│ Node alive ✅      │                     │ window.copilot Proxy     │
-│ HTTP+WS server     │                     │ + index.html / React app │
-└─────────┬──────────┘                     └──────────────────────────┘
-          │ spawns (just to call app.run())
-          ▼
-┌────────────────────┐
-│ CHILD launcher     │  Node frozen ❌ — bypassed for all real comms
-└────────────────────┘
-```
+
+`app.run()` pumps native window events through Node's event loop and returns immediately, so normal Node.js work continues while the window is open. No child process, local HTTP server, or WebSocket transport is required.
 
 Wire protocol (handled entirely by the lib — extension code never touches it):
 
